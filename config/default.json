@@ -1,0 +1,4 @@
+{
+    "jwtSecret" : "keeppatience",
+    "mongoURL" : "mongodb+srv://rezavai:1234@cluster0.ljemu.mongodb.net/Bookstore?retryWrites=true&w=majority"
+}
