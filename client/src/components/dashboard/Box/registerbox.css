@@ -1,0 +1,16 @@
+.register-box:hover{
+
+    opacity: 0.9;
+    
+    
+}
+.add-btn{
+
+    cursor: pointer;
+    
+    
+}
+.add-btn:hover{
+    text-decoration: underline;
+}
+

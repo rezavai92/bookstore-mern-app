@@ -9,7 +9,7 @@ const bookSchema = new Schema({
     },
 
     isbn:{
-        type:Number,
+        type:String,
         required:true,
         trim:true
     },
@@ -34,6 +34,9 @@ const bookSchema = new Schema({
     },
     availability:{
         type:Boolean
+    },
+    description:{
+        type:String
     }
 })
 

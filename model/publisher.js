@@ -6,13 +6,11 @@ const publisherSchema = new Schema({
     name:{
         type:String
     },
-    language:{
-        type:String
-    },
+    
     description :{
         type:String
     }
 })
 
-const Publisher = mongoose.model("Publishers",publisherSchema);
+const Publisher = mongoose.model("publishers",publisherSchema);
 module.exports = Publisher;
