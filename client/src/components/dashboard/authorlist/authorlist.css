@@ -1,0 +1,26 @@
+
+.author-list{
+    
+    height: 50vh;
+    overflow-y: scroll;
+}
+
+.author-table{
+
+}
+.author-table,th,td{
+
+    border : 1px solid silver;
+    border-collapse: separate;
+}
+th,td{
+    border: 0px solid white;
+}
+th{
+
+    background-color: #58a86a;
+
+}
+tr:nth-child(odd){
+    background-color:#c9d4cb;
+}

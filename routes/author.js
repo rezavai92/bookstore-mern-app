@@ -6,11 +6,36 @@ const Genre = require("../model/genre")
 //const {body,validationResult} = require("express-validator")
 const router = express.Router();
 
+//post author
+
+router.post("/",[adminAuth],async (req,res)=>{
+
+    const {name,language,genre,description} = req.body;
+
+    try{
+
+        const author = new Author({
+            name,
+            language,
+            genre,
+            description
+        })
+
+        const newAuthor = author.save();
+
+        res.json({author:newAuthor})
+    }
+    catch(error){
+        res.status(400).json({msg:"validition error"})
+
+    }
+} )
+
 router.get("/all",[adminAuth],async (req,res)=>{
 
     try{
         
-        const authors = await Author.find({});
+        const authors = await Author.find({}).sort("name");
 
         res.json({authors})
 
@@ -23,7 +48,22 @@ router.get("/all",[adminAuth],async (req,res)=>{
     }
 
 })
+router.delete("/:id",[adminAuth],async (req,res)=>{
 
+    const authorId = req.params.id;
+    
+    try{
+       const deletedAuthor= await Author.findOneAndDelete({_id:authorId});
+       console.log(deletedAuthor)
+       res.json({msg:"deleted Succeesfully"})
+    }
+
+    catch(error){
+        res.status(400).json({msg:"validition error"})
+
+    }
+
+} )
 router.post('/register',[adminAuth],async (req,res)=>{
     
 const {name,language,genre,description} = req.body;

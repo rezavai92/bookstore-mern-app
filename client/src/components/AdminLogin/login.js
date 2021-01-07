@@ -25,13 +25,13 @@ const Login = ()=>{
 
             try{
 
-               const loginToken= await axios.post('/auth/api/admin/login',{
+               const loginToken= await axios.post('/api/auth/admin/login',{
 
                     email,
                     password
                     
                 })
-                const admin =await axios.get('/auth/api/admin',{
+                const admin =await axios.get('/api/auth/admin',{
                     headers:{
                         axdxmxixn: loginToken.data.token
                     }

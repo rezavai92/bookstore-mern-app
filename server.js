@@ -15,13 +15,13 @@ const port =process.env.PORT||5000
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
-app.use('/users/api',users)
-app.use("/author/api",author)
-app.use("/book/api",book)
-app.use('/admin/api',admin)
-app.use('/auth/api',auth)
-app.use('/admin/langs',language)
-app.use('/admin/genres',genre)
+app.use('/api/users',users)
+app.use("/api/author",author)
+app.use("/api/book",book)
+app.use('/api/admin',admin)
+app.use('/api/auth',auth)
+app.use('/api/langs',language)
+app.use('/api/genres',genre)
 app.listen(port,()=>{
 
     

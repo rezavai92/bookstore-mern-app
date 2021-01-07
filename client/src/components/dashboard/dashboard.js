@@ -1,6 +1,7 @@
 import React ,{useEffect,useContext}from 'react'
 import {context} from '../../contexts/context'
 import RegisterBox from './Box/registerBox'
+import AuthorList from './authorlist/authorlist'
 import './dashboard.css'
 
 const Dashboard = ()=>{
@@ -72,6 +73,7 @@ const Dashboard = ()=>{
     return(<div>
 
         {loginToken?
+                <>
                 <div className="register-box-flex" >
 
 
@@ -116,12 +118,18 @@ const Dashboard = ()=>{
                                 numberBoxLabels={publisherProps.numberBoxLabels}
                                 dropdownLabels={publisherProps.dropdownLabels}
                                 dropdown={publisherProps.dropdown}
-                buttonText={publisherProps.buttonText}
-                textBox={publisherProps.textBox} bg={publisherProps.bg}
-                text={publisherProps.text} numberBox={publisherProps.numberBox} />
+                                buttonText={publisherProps.buttonText}
+                                textBox={publisherProps.textBox} bg={publisherProps.bg}
+                                text={publisherProps.text} numberBox={publisherProps.numberBox} />
 
+           
     
             </div>
+            <AuthorList/>
+            </>
+            
+
+
         :null}
     </div>)
 }

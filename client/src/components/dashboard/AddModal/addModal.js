@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useContext} from 'react'
+import React,{useState,useEffect,useContext,useRef } from 'react'
 import axios from 'axios'
 import {context} from  '../../../contexts/context'
 import {Modal,Button,Form} from 'react-bootstrap'
@@ -6,21 +6,27 @@ import './addModal.css'
 
 const AddModal =(props)=>{
 
-    
+        const langRef = useRef()
+        const authRef = useRef()
+        const genreRef = useRef()
+
         const [show, setShow] = useState(true);
         const [numberBox,setNumberBox] = useState([]);
         const [textBox,setTextBox] = useState([]);
         const [dropdown,setDropDown] = useState([]);
-
+        const [selectedGenre,setSelectedGenre] =  useState(null)
+        const[selectedAuthor,setSelectedAuthor] = useState(null)
+        const[selectedLanguage,setSelectedLanguage] = useState(null)
         const [langDropdown,setLangDropdown] = useState([])
         const[genreDropdown,setGenreDropdown] = useState([])
         const[authorDropdown,setAuthorDropdown] = useState([])
         const {loginToken} = useContext(context)
-        console.log(dropdown)
+        //console.log(dropdown)
+        console.log("genre ref is",genreRef.current )
         useEffect(()=>{
 
             
-          
+            
             props.dropdown.forEach((d)=>{
                // console.log(d)
                 if(d==="language"){
@@ -28,7 +34,7 @@ const AddModal =(props)=>{
                    
                     const existingLangDropdown = [...langDropdown];
                   //  console.log("in language, existingdropdownob",dropdownObjList)
-                    axios.get("/admin/langs/all",{headers:{axdxmxixn:loginToken}}).then((res)=>{
+                    axios.get("/api/langs/all",{headers:{axdxmxixn:loginToken}}).then((res)=>{
 
                         const options = res.data.languages.map((o)=>{return{value:o._id,text:o.name}});
                         
@@ -46,9 +52,10 @@ const AddModal =(props)=>{
 
                 else if (d==="author"){
 
+                    
                     const existingAuthDropdown = [...authorDropdown];
                    // console.log("in author, existingdropdownob",dropdownObjList)
-                    axios.get("/author/api/all",{headers:{axdxmxixn:loginToken}}).then((res)=>{
+                    axios.get("/api/author/all",{headers:{axdxmxixn:loginToken}}).then((res)=>{
 
                         const options = res.data.authors.map((o)=>{return{value:o._id,text:o.name}});
                         
@@ -67,7 +74,7 @@ const AddModal =(props)=>{
 
                     const existingGenreDropdown = [...genreDropdown];
                     //console.log("in genre, existingdropdownob",dropdownObjList)
-                    axios.get("/admin/genres/all",{headers:{axdxmxixn:loginToken}}).then((res)=>{
+                    axios.get("/api/genres/all",{headers:{axdxmxixn:loginToken}}).then((res)=>{
 
                         const options = res.data.genres.map((o)=>{return{value:o._id,text:o.name}});
                         
@@ -106,6 +113,66 @@ const AddModal =(props)=>{
             setShow(false);
         };
 
+        const addHandler =async (type)=>{
+
+
+            if(type==="Add Genre"){
+
+                try{
+                    await  axios.post('/api/genres',{name:textBox[0]},{headers:{
+                        axdxmxixn:loginToken
+                    }})
+                  }
+                  catch(error){
+                      throw error;
+                  }
+            }
+            else if (type==="Add Language"){
+
+                try{
+                  await  axios.post('/api/langs',{name:textBox[0]},{headers:{
+                      axdxmxixn:loginToken
+                  }})
+                }
+                catch(error){
+                    throw error;
+                }
+
+            }
+            else if (type==="Add Author"){
+                try{
+                    await  axios.post('/api/author',
+                    
+                    {name:textBox[0],
+                     genre:selectedGenre,
+                     description:textBox[1],  
+                    language:selectedLanguage },{headers:{
+                    axdxmxixn:loginToken
+                    }})
+                  }
+                  catch(error){
+                      throw error;
+                  }
+  
+
+            }
+            else if (type==="Add Book"){
+
+            }
+            else if (type==="Add Publisher"){
+                try{
+                    await  axios.post('/api/publishers',{name:textBox[0]},{headers:{
+                        axdxmxixn:loginToken
+                    }})
+                  }
+                  catch(error){
+                      throw error;
+                  }
+  
+
+
+            }
+        }
 
 
         const mappedTextBox = textBox.map((t,index)=>{
@@ -144,7 +211,8 @@ const AddModal =(props)=>{
           //  console.log(d)
             return(<>
             <Form.Label>{props.dropdownLabels[2]} :</Form.Label>
-            <select style={{width:"100%"}} >
+            <select style={{width:"100%"}} onChange={(e)=>{setSelectedAuthor(e.target.value)}} >
+            <option>Select Author</option>
                 {d.map((o)=>{
                     console.log(o)
                     return(<option value={o.value} >{o.text}</option>)
@@ -157,7 +225,8 @@ const AddModal =(props)=>{
             //  console.log(d)
               return(<>
                 <Form.Label>{props.dropdownLabels[1]} : </Form.Label>
-              <select style={{width:"100%" }} >
+              <select style={{width:"100%" }} onChange={(e)=>{setSelectedGenre(e.target.value)}}  >
+              <option>Select Genre</option>
                   {d.map((o)=>{
                       console.log(o)
                       return(<option value={o.value} >{o.text}</option>)
@@ -170,10 +239,12 @@ const AddModal =(props)=>{
             //  console.log(d)
               return(<>
                 <Form.Label>{props.dropdownLabels[0]} : </Form.Label>
-              <select style={{width:"100%"}} >
+              <select style={{width:"100%"}}  onChange={(e)=>{setSelectedLanguage(e.target.value)}}  >
+
+                <option>Select Language</option>
                   {d.map((o)=>{
                       console.log(o)
-                      return(<option value={o.value} >{o.text}</option>)
+                      return(<option  value={o.value} >{o.text}</option>)
                   })}
               </select>
               </>)
@@ -222,7 +293,7 @@ const AddModal =(props)=>{
                 <Button variant="secondary" onClick={handleClose}>
                   Close
                 </Button>
-                <Button variant="primary" onClick={handleClose}>
+                <Button variant="primary" onClick={(e)=>{ addHandler(props.header)  ;handleClose()} }>
                   Add {props.buttonText}
                 </Button>
               </Modal.Footer>
