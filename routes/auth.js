@@ -9,6 +9,24 @@ const {body,validationResult} = require('express-validator')
 
 const router = express.Router();
 
+
+//get user 
+
+router.get('/admin',[adminAuth],async(req,res)=>{
+
+    try{
+    const admin = await Admin.findById(req.admin.id).select("-password")
+
+    res.json({
+        admin:admin
+    })
+    }
+
+    catch(error){
+
+        res.status(500).json({msg:"internal server error"})
+    }
+} )
 router.post('/login',[
                 body("email").isEmail(),
                 body("password").isLength({min:5})

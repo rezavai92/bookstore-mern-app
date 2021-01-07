@@ -6,6 +6,24 @@ const Genre = require("../model/genre")
 //const {body,validationResult} = require("express-validator")
 const router = express.Router();
 
+router.get("/all",[adminAuth],async (req,res)=>{
+
+    try{
+        
+        const authors = await Author.find({});
+
+        res.json({authors})
+
+
+    }
+
+    catch(error){
+
+        res.status(500).json({msg:"internal server error"})
+    }
+
+})
+
 router.post('/register',[adminAuth],async (req,res)=>{
     
 const {name,language,genre,description} = req.body;

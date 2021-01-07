@@ -14,7 +14,7 @@ if(!token){
 try {
  const deCoded=  jwt.verify(token,config.get('jwtSecret') );
 
- req.admin =deCoded.admin
+ req.admin =deCoded.admin;
  
  next()
 }
