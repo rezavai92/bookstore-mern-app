@@ -14,7 +14,7 @@ const [willEditPopup,setWillEditPopup] = useState(false)
 const[willDeletePopup,setWillDeletePopup] = useState(false)
 const [authors,setAuthors] = useState([])
 const [selectedAuthor,setSelectedAuthor] = useState("")
-const {loginToken} = useContext(context)
+const {adminLoginToken} = useContext(context)
 
 console.log("list of authors",authors)
 useEffect(()=>{
@@ -24,7 +24,7 @@ useEffect(()=>{
 
             const response = await axios.get('/api/author/all',{
                 headers:{
-                    axdxmxixn:loginToken
+                    axdxmxixn:adminLoginToken
                 }
             } )
 
@@ -40,6 +40,7 @@ useEffect(()=>{
 
 },[])
 
+
 const editPopupHandler =(authorId)=>{
     setSelectedAuthor(authorId)
     setWillEditPopup(!willEditPopup)
@@ -53,7 +54,7 @@ const deletePopupHandler = (authorId)=>{
 
             const response = await axios.get('/api/author/all',{
                 headers:{
-                    axdxmxixn:loginToken
+                    axdxmxixn:adminLoginToken
                 }
             } )
 
@@ -110,7 +111,19 @@ return(
     
     {
         willEditPopup?
-        <AddModal/>
+        <AddModal numberBox="0" 
+        header="Update Author"
+        type="update"
+        buttonText= "Update Author"
+         dropdown={["language","genre"]}
+         textBoxLabels={["name","description"]}
+         dropdownLabels={["Select Language","Select Genre"]}
+         numberBoxLabels={[]}
+        textBox="2"
+         numberBox="0"
+        text="Update Author" 
+        bg="#568c91"
+ addButtonHandler={editPopupHandler} />
         :null
     }
 

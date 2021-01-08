@@ -1,14 +1,38 @@
-import React ,{useEffect,useContext}from 'react'
+import React ,{useState,useEffect,useContext}from 'react'
 import {context} from '../../contexts/context'
+import {Redirect} from 'react-router-dom'
 import RegisterBox from './Box/registerBox'
+import AdminLogout from '../AdminLogout/logout'
 import AuthorList from './authorlist/authorlist'
 import './dashboard.css'
 
 const Dashboard = ()=>{
 
-    const {loginToken} = useContext(context)
+    const {adminLoginToken,confirmAdminLogout} = useContext(context)
+    const[willRedirectToLogin,setWillRedirectToLogin] = useState(false)
+
+    useEffect(()=>{
+
+        var timeout;
+
+        if(!adminLoginToken){
+
+          timeout=  setTimeout(()=>{ 
+                setWillRedirectToLogin(true)
+            },2000)
+            
+        }
+
+        return ()=>{
+
+            clearTimeout(timeout)
+        }
+
+        
+    },[adminLoginToken])
+
     const authorProps={
-        buttonText:"Author",
+        buttonText:"Add Author",
          dropdown:["language","genre"],
          textBoxLabels:["name","description"],
          dropdownLabels:["Select Language","Select Genre"],
@@ -21,7 +45,7 @@ const Dashboard = ()=>{
     }
 
     const genreProps={
-        buttonText:"Genre",
+        buttonText:"Add Genre",
         textBoxLabels:["name"],
          dropdownLabels:[],
          numberBoxLabels:[],
@@ -33,7 +57,7 @@ const Dashboard = ()=>{
 
     }
     const publisherProps={
-        buttonText:"Publisher",
+        buttonText:"Add Publisher",
         textBoxLabels:["name","description"],
          dropdownLabels:[],
          numberBoxLabels:[],
@@ -45,7 +69,7 @@ const Dashboard = ()=>{
 
     }
     const bookProps={
-        buttonText:"Book",
+        buttonText:"Add Book",
         textBoxLabels:["name","isbn","description","availability"],
          dropdownLabels:["Select Language","Select Genre","Select Author"],
          numberBoxLabels:["price","page"],
@@ -57,7 +81,7 @@ const Dashboard = ()=>{
 
     }
     const languageProps={
-        buttonText:"Language",
+        buttonText:"Add Language",
         textBoxLabels:["name"],
          dropdownLabels:[],
          numberBoxLabels:[],
@@ -69,11 +93,21 @@ const Dashboard = ()=>{
 
     }
 
+    
 
+    
+
+      
+     
+
+
+    console.log("admin login token from dashboard.js",adminLoginToken)
     return(<div>
 
-        {loginToken?
+        {adminLoginToken?
                 <>
+                
+                <AdminLogout/>
                 <div className="register-box-flex" >
 
 
@@ -131,6 +165,10 @@ const Dashboard = ()=>{
 
 
         :null}
+
+        {
+            willRedirectToLogin?<Redirect to="/axdxmxixn/login" />:null
+        }
     </div>)
 }
 

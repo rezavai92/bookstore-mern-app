@@ -1,5 +1,6 @@
 const express = require("express")
 const Author = require("../model/author")
+const Book = require("../model/book")
 const adminAuth = require("../middlewares/adminAuth")
 const Language = require("../model/language")
 const Genre = require("../model/genre")
@@ -53,8 +54,10 @@ router.delete("/:id",[adminAuth],async (req,res)=>{
     const authorId = req.params.id;
     
     try{
+        const deletedBook=  await Book.deleteMany({author:authorId});
        const deletedAuthor= await Author.findOneAndDelete({_id:authorId});
-       console.log(deletedAuthor)
+
+    
        res.json({msg:"deleted Succeesfully"})
     }
 

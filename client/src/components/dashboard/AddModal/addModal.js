@@ -20,7 +20,7 @@ const AddModal =(props)=>{
         const [langDropdown,setLangDropdown] = useState([])
         const[genreDropdown,setGenreDropdown] = useState([])
         const[authorDropdown,setAuthorDropdown] = useState([])
-        const {loginToken} = useContext(context)
+        const {adminLoginToken} = useContext(context)
         //console.log(dropdown)
         console.log("genre ref is",genreRef.current )
         useEffect(()=>{
@@ -34,7 +34,7 @@ const AddModal =(props)=>{
                    
                     const existingLangDropdown = [...langDropdown];
                   //  console.log("in language, existingdropdownob",dropdownObjList)
-                    axios.get("/api/langs/all",{headers:{axdxmxixn:loginToken}}).then((res)=>{
+                    axios.get("/api/langs/all",{headers:{axdxmxixn:adminLoginToken}}).then((res)=>{
 
                         const options = res.data.languages.map((o)=>{return{value:o._id,text:o.name}});
                         
@@ -55,7 +55,7 @@ const AddModal =(props)=>{
                     
                     const existingAuthDropdown = [...authorDropdown];
                    // console.log("in author, existingdropdownob",dropdownObjList)
-                    axios.get("/api/author/all",{headers:{axdxmxixn:loginToken}}).then((res)=>{
+                    axios.get("/api/author/all",{headers:{axdxmxixn:adminLoginToken}}).then((res)=>{
 
                         const options = res.data.authors.map((o)=>{return{value:o._id,text:o.name}});
                         
@@ -74,7 +74,7 @@ const AddModal =(props)=>{
 
                     const existingGenreDropdown = [...genreDropdown];
                     //console.log("in genre, existingdropdownob",dropdownObjList)
-                    axios.get("/api/genres/all",{headers:{axdxmxixn:loginToken}}).then((res)=>{
+                    axios.get("/api/genres/all",{headers:{axdxmxixn:adminLoginToken}}).then((res)=>{
 
                         const options = res.data.genres.map((o)=>{return{value:o._id,text:o.name}});
                         
@@ -120,7 +120,7 @@ const AddModal =(props)=>{
 
                 try{
                     await  axios.post('/api/genres',{name:textBox[0]},{headers:{
-                        axdxmxixn:loginToken
+                        axdxmxixn:adminLoginToken
                     }})
                   }
                   catch(error){
@@ -131,7 +131,7 @@ const AddModal =(props)=>{
 
                 try{
                   await  axios.post('/api/langs',{name:textBox[0]},{headers:{
-                      axdxmxixn:loginToken
+                      axdxmxixn:adminLoginToken
                   }})
                 }
                 catch(error){
@@ -147,7 +147,7 @@ const AddModal =(props)=>{
                      genre:selectedGenre,
                      description:textBox[1],  
                     language:selectedLanguage },{headers:{
-                    axdxmxixn:loginToken
+                    axdxmxixn:adminLoginToken
                     }})
                   }
                   catch(error){
@@ -162,7 +162,7 @@ const AddModal =(props)=>{
             else if (type==="Add Publisher"){
                 try{
                     await  axios.post('/api/publishers',{name:textBox[0]},{headers:{
-                        axdxmxixn:loginToken
+                        axdxmxixn:adminLoginToken
                     }})
                   }
                   catch(error){
@@ -294,7 +294,7 @@ const AddModal =(props)=>{
                   Close
                 </Button>
                 <Button variant="primary" onClick={(e)=>{ addHandler(props.header)  ;handleClose()} }>
-                  Add {props.buttonText}
+                  {props.buttonText}
                 </Button>
               </Modal.Footer>
             </Modal>

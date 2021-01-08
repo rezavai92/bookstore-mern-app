@@ -10,12 +10,13 @@ const Login = ()=>{
     const[password,setPassword] = useState("")
     const [willRedirect,setWillRedirect] = useState(false)
     const [willShowError,setWillShowError] = useState(false)
-    const{confirmLogin,loginToken} = useContext(context)
+    const{confirmAdminLogin,adminLoginToken} = useContext(context)
 
 
     const render = ()=>{
-
+        if(adminLoginToken){
         setWillRedirect(true)
+        }
     }
     const formSubmitHandler = (e)=>{
 
@@ -37,7 +38,7 @@ const Login = ()=>{
                     }
                 })
              
-                confirmLogin(loginToken.data.token,admin.data.admin._id);
+                confirmAdminLogin(loginToken.data.token,admin.data.admin._id);
                 render()
 
 
