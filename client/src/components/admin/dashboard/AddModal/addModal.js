@@ -1,6 +1,6 @@
 import React,{useState,useEffect,useContext,useRef } from 'react'
 import axios from 'axios'
-import {context} from  '../../../contexts/context'
+import {context} from  '../../../../contexts/context'
 import {Modal,Button,Form} from 'react-bootstrap'
 import './addModal.css'
 
@@ -11,15 +11,19 @@ const AddModal =(props)=>{
         const genreRef = useRef()
 
         const [show, setShow] = useState(true);
+        const [bookPhoto,setBookPhoto] = useState("");
+        const [files,setFiles] = useState([])
         const [numberBox,setNumberBox] = useState([]);
         const [textBox,setTextBox] = useState([]);
         const [dropdown,setDropDown] = useState([]);
         const [selectedGenre,setSelectedGenre] =  useState(null)
         const[selectedAuthor,setSelectedAuthor] = useState(null)
         const[selectedLanguage,setSelectedLanguage] = useState(null)
+        const [selectedPublisher,setSelectedPublisher] = useState(null)
         const [langDropdown,setLangDropdown] = useState([])
         const[genreDropdown,setGenreDropdown] = useState([])
         const[authorDropdown,setAuthorDropdown] = useState([])
+        const[publisherDropdown,setPublisherDropdown] = useState([])
         const {adminLoginToken} = useContext(context)
         //console.log(dropdown)
         console.log("genre ref is",genreRef.current )
@@ -68,7 +72,28 @@ const AddModal =(props)=>{
 
                     })
                 }
+                 else if (d==="publisher"){
 
+                    
+                    const existingPublisherDropdown = [...publisherDropdown];
+                   // console.log("in author, existingdropdownob",dropdownObjList)
+                    axios.get("/api/publishers/all",{headers:{axdxmxixn:adminLoginToken}}).then((res)=>{
+
+                        const options = res.data.publishers.map((o)=>{
+                            
+                            return{value:o._id,text:o.name}});
+                        
+                        existingPublisherDropdown.push(options )
+                        setPublisherDropdown(existingPublisherDropdown)
+                       // console.log("in auth",existingDrodownObjList)
+
+                        
+                    }).catch((error)=>{
+                        throw error;
+                    })
+                }
+
+                
 
                 else if (d==="genre"){
 
@@ -88,24 +113,50 @@ const AddModal =(props)=>{
                 }
             })
        
+            /// files {images}
+            let existingFiles =[...files];
 
+            for (let i =0;i<Number(props.files);i++){
+
+                existingFiles.push("")
+            }
+
+            setFiles(existingFiles)
+
+            /// textboxes
             let existingTextBox = [...textBox];
 
             for(let i=0;i<Number(props.textBox);i++){
-                existingTextBox.push("")
+                if(props.type==="update"){
+
+                    existingTextBox.push(props.textBoxTexts[i])
+                }
+                else{
+                    existingTextBox.push("")
+                }
+                
             }
 
             setTextBox(existingTextBox);
 
+            // number boxes
             let existingNumberBox = [...numberBox];
 
             for(let i=0;i<Number(props.numberBox);i++){
-                existingNumberBox.push("")
-            }
+                
+                if(props.type==="update"){
 
+                    existingNumberBox.push(props.numberBoxNumbers[i])
+                }
+               else { 
+                   existingNumberBox.push("") 
+                }
+            }
+           // setBookPhoto(files[0])
             setNumberBox(existingNumberBox);
         },[])
 
+        // handleclose()
         
         const handleClose = () => {
             
@@ -115,6 +166,77 @@ const AddModal =(props)=>{
 
         const addHandler =async (type)=>{
 
+            if(props.type==="update"){
+                 if (type==="Update Author"){
+
+                    
+    
+                        try{
+                            await axios.put(`/api/author/${props.authorId}`,
+                                {name:textBox[0],
+                                    genre:selectedGenre,
+                                    description:textBox[1],  
+                                   language:selectedLanguage },
+                                   
+                                   {headers:{
+                                   axdxmxixn:adminLoginToken
+                                   }}
+                            )
+                                }
+    
+                            
+                        
+    
+                        catch(error){
+                            throw error;
+    
+                        }
+    
+                    
+                    
+                      
+                    }
+
+
+                    else if (type==="Update Book"){
+
+
+                const data = new FormData();
+
+                data.append("name",textBox[0] );
+                data.append("isbn",textBox[1] );
+                data.append("description",textBox[2] );
+                data.append("availability",textBox[3] );
+                data.append("genre",selectedGenre );
+                data.append("author",selectedAuthor);
+                data.append("page",numberBox[0] );
+                data.append("photo",bookPhoto );
+                data.append("price",numberBox[1] );
+                data.append("publisher",selectedPublisher);
+                data.append("language",selectedLanguage);
+
+                try{
+                await axios.put(`/api/book/${props.bookId}`,data,
+
+                   {headers:{
+                    axdxmxixn : adminLoginToken
+                }})
+
+            }
+            catch(error){
+
+                throw error;
+            }
+                    }
+      
+    
+                }
+    
+                
+    
+
+            
+            else {
 
             if(type==="Add Genre"){
 
@@ -139,26 +261,74 @@ const AddModal =(props)=>{
                 }
 
             }
+
             else if (type==="Add Author"){
+
+               
+
+                
                 try{
                     await  axios.post('/api/author',
                     
                     {name:textBox[0],
                      genre:selectedGenre,
                      description:textBox[1],  
-                    language:selectedLanguage },{headers:{
+                    language:selectedLanguage }
+                    
+                    ,{headers:{
                     axdxmxixn:adminLoginToken
-                    }})
+                    }}
+                    
+                    )
                   }
                   catch(error){
                       throw error;
                   }
+                
   
 
             }
+
+            
+
+            
+
             else if (type==="Add Book"){
 
+
+                const data = new FormData();
+
+                data.append("name",textBox[0] );
+                data.append("isbn",textBox[1] );
+                data.append("description",textBox[2] );
+                data.append("availability",textBox[3] );
+                data.append("genre",selectedGenre );
+                data.append("author",selectedAuthor);
+                data.append("page",numberBox[0] );
+                data.append("photo",files[0] );
+                data.append("price",numberBox[1] );
+                data.append("publisher",selectedPublisher);
+                data.append("language",selectedLanguage);
+
+
+                try{
+                 await axios.post("/api/book",data,
+
+                    {headers:{
+                     axdxmxixn : adminLoginToken
+                 }})
+
+                
+                }
+
+                catch(error){
+                    throw error
+
+                }
+
             }
+
+
             else if (type==="Add Publisher"){
                 try{
                     await  axios.post('/api/publishers',{name:textBox[0]},{headers:{
@@ -170,6 +340,8 @@ const AddModal =(props)=>{
                   }
   
 
+
+            }
 
             }
         }
@@ -189,6 +361,21 @@ const AddModal =(props)=>{
                 }} placeholder={ props.textBoxLabels[index] } />
                 </>
         )
+        })
+
+        const mappedFiles = files.map((file,index)=>{
+
+            return(<>
+            <input type="file" id={`photo${index}`}  name={`photo${index}`}  
+                onChange={(e)=>{
+
+                let fileBoxes = [...files];
+                fileBoxes[index] = e.target.files[0];
+                setFiles(fileBoxes);
+                
+                
+            }}  />
+            </>)
         })
         const mappedNumberBox = numberBox.map((n,index)=>{
             return (
@@ -228,12 +415,29 @@ const AddModal =(props)=>{
               <select style={{width:"100%" }} onChange={(e)=>{setSelectedGenre(e.target.value)}}  >
               <option>Select Genre</option>
                   {d.map((o)=>{
-                      console.log(o)
+                      
                       return(<option value={o.value} >{o.text}</option>)
                   })}
               </select>
               </>)
           })
+
+          const mappedPublisherDropdown = publisherDropdown.map((d,index)=>{
+            //  console.log(d)
+              return(<>
+                <Form.Label>{props.dropdownLabels[3]} : </Form.Label>
+              <select style={{width:"100%" }} 
+              onChange={(e)=>{setSelectedPublisher(e.target.value)}}  >
+              <option>Select Publisher</option>
+                  {d.map((o)=>{
+                      
+                      return(<option value={o.value} >{o.text}</option>)
+                  })}
+              </select>
+              </>)
+          })
+
+         // console.log("selected publisher is",selectedPublisher)
 
           const mappedLanguageDropdown = langDropdown.map((d,index)=>{
             //  console.log(d)
@@ -243,7 +447,7 @@ const AddModal =(props)=>{
 
                 <option>Select Language</option>
                   {d.map((o)=>{
-                      console.log(o)
+                      
                       return(<option  value={o.value} >{o.text}</option>)
                   })}
               </select>
@@ -269,12 +473,20 @@ const AddModal =(props)=>{
             
             :null}
 
+            {files.length>0? 
+            <div>
+                {mappedFiles}
+            </div>
+            :null}
+
 
                 {props.dropdown.length>0?
                 <div>
+                    
                     {mappedAuthorDropdown}
                     {mappedGenreDropdown}
                     {mappedLanguageDropdown}
+                    {mappedPublisherDropdown}
                 </div>
                 :null}
             {numberBox.length>0?

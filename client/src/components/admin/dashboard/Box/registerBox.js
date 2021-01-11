@@ -27,15 +27,18 @@ const RegisterBox =(props)=>{
       {
         willPopup?
         <div>
-          <AddModal numberBox={props.numberBox} 
+          <AddModal 
+            type="add"
+            numberBox={props.numberBox} 
             header={props.text}
             textBox={props.textBox}
             dropdown={props.dropdown}
+            files={props.files}
             textBoxLabels ={props.textBoxLabels}
             numberBoxLabels={props.numberBoxLabels}
             dropdownLabels ={props.dropdownLabels}
 
-          buttonText={props.buttonText} addButtonHandler={addButtonHandler} />
+             buttonText={props.buttonText} addButtonHandler={addButtonHandler} />
           </div>
         :null
       }

@@ -9,6 +9,8 @@ const ContextProvider = (props)=>{
 
 
 const[loggedInAdminId,setLoggedInAdminId] = useState(null)
+const[cart,setCart] = useState({items:[]})
+const[total,setTotal] = useState(0)
 const [token,setToken] =useState("");
 const[loggedInUserId,setLoggedInUserId]=useState(null)
 const[adminLoginToken,setAdminLoginToken] = useState("")
@@ -25,6 +27,53 @@ setAdminLoginToken(Cookies.get("axdxmxixn"))
 const registerUser = (token)=>{
 
     setToken(token);
+
+}
+
+const incrementTotal = (amount)=>{
+
+    setTotal(total+amount)
+}
+const decrementTotal  = (amount)=>{
+
+    setTotal(total-amount);
+}
+
+const addToCart=(item)=>{
+
+const cartItems = [...cart.items];
+
+ const found =cartItems.find((i)=>{return item._id===i._id});
+
+ console.log(found)
+ if(found){
+    alert("this item is already added to the cart");
+
+ }
+
+ else{
+     let existingTotal =total;
+
+     setTotal(existingTotal+item.price);
+    setCart({items:cartItems});
+    
+ }
+cartItems.push(item);
+
+
+}
+
+const removeFromCart =(itemId)=>{
+
+    const cartItems = [...cart.items];
+
+    const filteredItems = cartItems.filter((c)=>{
+
+        return c.id!=itemId;
+    })
+
+    setCart({items:filteredItems})
+
 
 }
 
@@ -57,6 +106,14 @@ const confirmAdminLogout = ()=>{
 
     }
 
+    const arrayBufferToBase64=(buffer)=> {
+        var binary = '';
+        var bytes = [].slice.call(new Uint8Array(buffer));
+        bytes.forEach((b) => binary += String.fromCharCode(b));
+        return window.btoa(binary);
+    }
+    
+
     const confirmLogin = (token,loggedInAdminId)=>{
 
         setAdminLoginToken(token);
@@ -88,9 +145,9 @@ const confirmAdminLogout = ()=>{
 
     return(<div>
 
-        <context.Provider value={{loggedInUserId, loginToken,loggedInAdminId,confirmLogin,confirmLogout,
+        <context.Provider value={{arrayBufferToBase64,total,cart,addToCart,removeFromCart, loggedInUserId, loginToken,loggedInAdminId,confirmLogin,confirmLogout,
         
-        adminLoginToken, confirmAdminLogin,confirmAdminLogout
+        adminLoginToken,incrementTotal,decrementTotal, confirmAdminLogin,confirmAdminLogout
         }} >
 
             {props.children}

@@ -36,8 +36,27 @@ router.get("/all",[adminAuth],async (req,res)=>{
 
     try{
         
-        const authors = await Author.find({}).sort("name");
+        const authors = await Author.find({}).sort("name").populate("genre","name")
+        .populate("language","name");
 
+    //   const modifiedAuthors=  authors.map(async(author)=>{
+
+            
+    //                 const genreName = await Genre.findById(author.genre);
+    //                 const languageName = await Language.findById(author.language);
+    //                 return{
+    //                     "_id" : author._id,
+    //                     "name":author.name,
+    //                     "genre":genreName,
+    //                     "language":languageName,
+    //                     "description":author.description
+    //                 }
+    //             }
+
+                
+    //     )
+    //     console.log(modifiedAuthors)
+      // console.log(authors)
         res.json({authors})
 
 
@@ -49,6 +68,25 @@ router.get("/all",[adminAuth],async (req,res)=>{
     }
 
 })
+
+router.put("/:id",[adminAuth],async (req,res)=>{
+
+    console.log("put")
+    const authorId = req.params.id;
+    const {name,description,genre,language} =req.body;
+
+    try{
+
+        const updatedAuthor=await Author.findByIdAndUpdate(authorId,{name,description,genre,language})
+        res.json({updatedAuthor})
+    }
+
+    catch(error){
+        throw error;
+
+    }
+
+} )
 router.delete("/:id",[adminAuth],async (req,res)=>{
 
     const authorId = req.params.id;

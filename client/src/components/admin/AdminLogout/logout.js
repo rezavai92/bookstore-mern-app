@@ -1,5 +1,5 @@
 import React,{useContext} from 'react' 
-import {context} from '../../contexts/context'
+import {context} from '../../../contexts/context'
 import {Button} from 'react-bootstrap'
 const Logout = ()=>{
 

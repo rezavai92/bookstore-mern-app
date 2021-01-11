@@ -27,10 +27,44 @@ catch(error){
 }
 
 } )
+router.delete("/:id",[adminAuth],async (req,res)=>{
+
+
+    try{
+
+        
+    }
+
+    catch(error){
+
+
+    }
+})
+
+//get particular genre name
+
+// router.get("/:id",[adminAuth],async (req,res)=>{
+
+
+//     try{
+//      const name=  await Genre.findById(req.params.id);
+
+//      res.json({genre:name})
+
+//     }
+
+//     catch(error){
+
+//         res.status(500).json({msg:"internal server error"})
+//     }
+// })
+
+//get all genres
 router.get("/all",[adminAuth] ,async (req,res)=>{
     
     try{
 
+        console.log("hello")
         const genres = await Genre.find({});
 
         res.json({
@@ -38,8 +72,8 @@ router.get("/all",[adminAuth] ,async (req,res)=>{
         })
     }
     catch(error){
-
-        res.status(500).json({msg:"internal server error"})
+        throw error
+      //  res.status(500).json({msg:"internal server error"})
     }
 
 })

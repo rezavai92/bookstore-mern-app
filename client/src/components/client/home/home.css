@@ -1,0 +1,18 @@
+.home-books{
+
+    margin-top: 2%;
+    position: relative;
+}
+.total-cart{
+
+    border:1px solid silver;
+    position: fixed ;
+    padding:5px;
+    top:50%;
+    right:1%;
+    z-index: 100;
+
+    
+
+
+}

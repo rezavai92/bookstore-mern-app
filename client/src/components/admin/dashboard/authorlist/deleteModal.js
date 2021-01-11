@@ -1,17 +1,17 @@
 import React,{useState,useContext} from 'react'
 import {Modal,Button} from 'react-bootstrap'
-import {context} from '../../../contexts/context'
+import {context} from '../../../../contexts/context'
 import axios from 'axios'
 const DeleteModal = (props)=>{
 
     const [show, setShow] = useState(true);
-    const {loginToken} = useContext (context)
+    const {adminLoginToken} = useContext (context)
     const deleteRowHandler =async ()=>{
 
         try{
 
            await axios.delete(`/api/author/${props.authorId}`,{headers:{
-                axdxmxixn: loginToken
+                axdxmxixn: adminLoginToken
             }} )
 
         }

@@ -3,50 +3,137 @@ const adminAuth = require('../middlewares/adminAuth')
 const Book = require("../model/book")
 const Author = require("../model/author")
 const Publisher = require("../model/publisher")
+let fs = require('fs'); 
+let path = require('path'); 
+let multer = require('multer'); 
+
+let upload = multer({ dest: 'uploads/' })
 const Genre = require("../model/genre")
 const Language = require("../model/language")
 const router = express.Router()
 
-router.post("/register",[adminAuth],async (req,res)=>{
+//get all books
+
+
+
+router.get("/all",async (req,res)=>{
+
+    try{
+
+        
+       const books= await Book.find({}).sort("name")
+       .populate("genre","name").populate("language","name").
+       populate("author","name").populate("publisher","name")
+       
+       ;
+
+       res.json({books})
+
+    }
+
+    catch(error){
+
+        res.status(500).json({msg:"internal server error"})
+
+    }
+})
+
+// update a book
+
+router.put("/:id",[adminAuth,upload.single("photo")],async (req,res)=>{
+
+    let profileFields={}
+    if(req.file){
+      profileFields={photo :{data:null}}
+    
+     profileFields.photo.data = fs.readFileSync(req.file.path)   
+   
+    }
+    
+    const{name,isbn,author,publisher,genre,language,page,price,availability,description} = req.body;
+
+
+    profileFields.name=name;
+    profileFields.isbn=isbn;
+    profileFields.author=author;
+    profileFields.publisher=publisher;
+    profileFields.availability = availability;
+    profileFields.genre=genre;
+    profileFields.language=language;
+    profileFields.page=page;
+    profileFields.price = price;
+    profileFields.description=description;
+
+        try{
+           const updatedBook= await Book.findByIdAndUpdate(req.params.id,profileFields,{useFindAndModify:false})
+
+            res.json({updatedBook})
+
+        }
+
+        catch(error){
+
+            res.status(500).json({msg:"internal server error"})
+        }
+})
+
+// delete a book
+
+router.delete("/:id",[adminAuth],async (req,res)=>{
+
+    try{
+        const deletedBook =await Book.findByIdAndDelete(req.params.id);
+        res.json({deletedBook})
+    }
+
+    catch(error){
+        res.status(500).json({msg:"internal server error"})
+    }
+
+})
+
+router.post("/",[upload.single('photo'),adminAuth],async (req,res)=>{
 
     
     const {name,isbn,author,price,page,description,genre,publisher,language,availability}=req.body;
     
-    try{
+    let profileFields={}
+    if(req.file){
+      profileFields={photo :{data:null}}
+    
+     profileFields.photo.data = fs.readFileSync(req.file.path)   
+   
+    }
+    
+ //   const{name,isbn,author,publisher,genre,language,page,price,availability,description} = req.body;
 
-        const foundLang = await Language.findById(language);
-        const foundGenre= await Genre.findById(genre);
-        const foundAuthor = await Author.findById(author);
-        const foundPublisher = await Publisher.findById(publisher);
-        
-        if(foundLang && foundGenre && foundAuthor && foundPublisher){
-            const book = new Book ({name,isbn,publisher:foundPublisher.id,author:foundAuthor.id,genre:foundGenre.id,language:foundLang.id,price,page,description,availability});
 
-            book.save().then((b)=>{
+    profileFields.name=name;
+    profileFields.isbn=isbn;
+    profileFields.author=author;
+    profileFields.publisher=publisher;
+    profileFields.availability = availability;
+    profileFields.genre=genre;
+    profileFields.language=language;
+    profileFields.page=page;
+    profileFields.price = price;
+    profileFields.description=description;
 
-                res.json({
-                    msg:{
-                        book:b
-                    }
-                })
+        try{
+           const book= new Book(profileFields);
 
-            }).catch((err)=>{
+           const newBook = await book.save();
 
-                res.status(500).json({msg:"internal server error"})
-                
-            })
+
+
+            res.json({newBook})
 
         }
-        else{
-            res.status(400).json({msg:"validation error"})
+
+        catch(error){
+
+            res.status(500).json({msg:"internal server error"})
         }
-        
-    }
-    catch(error){
-
-        res.status(500).json({msg:"internal server error"})
-    }
-
 
 })
 

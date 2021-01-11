@@ -26,6 +26,9 @@ const bookSchema = new Schema({
         ref:"authors",
         required:true
     },
+    photo :
+    { data: Buffer, contentType: String} 
+    ,
     page:{
         type:Number
     },
@@ -34,6 +37,10 @@ const bookSchema = new Schema({
     },
     availability:{
         type:Boolean
+    },
+    publisher:{
+        type:Schema.Types.ObjectId,
+        ref:"publishers"
     },
     description:{
         type:String

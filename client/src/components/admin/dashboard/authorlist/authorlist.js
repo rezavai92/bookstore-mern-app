@@ -1,5 +1,5 @@
 import React ,{useState,useEffect,useContext} from 'react'
-import {context} from '../../../contexts/context'
+import {context} from '../../../../contexts/context'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt,faEdit } from '@fortawesome/free-solid-svg-icons'
 import AddModal from '../AddModal/addModal'
@@ -13,9 +13,10 @@ const AuthorList = ()=>{
 const [willEditPopup,setWillEditPopup] = useState(false)
 const[willDeletePopup,setWillDeletePopup] = useState(false)
 const [authors,setAuthors] = useState([])
-const [selectedAuthor,setSelectedAuthor] = useState("")
+//const[selectedAuthorName,setSele] = useState("");
+const [selectedAuthor,setSelectedAuthor] = useState(null)
 const {adminLoginToken} = useContext(context)
-
+const [edited,setEdited] = useState(false)
 console.log("list of authors",authors)
 useEffect(()=>{
 
@@ -28,7 +29,21 @@ useEffect(()=>{
                 }
             } )
 
-            setAuthors(response.data.authors)
+            //let foundAuthors = response.data.authors;
+
+
+          const newAuthors=  response.data.authors.map((author)=>{
+
+            return{
+                name:author.name,
+                _id:author._id,
+                description:author.description,
+                genre:author.genre.name,
+                language:author.language.name,
+
+            }
+          })
+            setAuthors(newAuthors)
         }
         catch(error){
             throw error
@@ -38,17 +53,14 @@ useEffect(()=>{
 
     fetchData()
 
-},[])
+},[edited])
 
 
-const editPopupHandler =(authorId)=>{
-    setSelectedAuthor(authorId)
+const editPopupHandler =(_id,name,description,language,genre)=>{
+
+    setSelectedAuthor({_id,name,description,language,genre});
+   
     setWillEditPopup(!willEditPopup)
-}
-
-const deletePopupHandler = (authorId)=>{
-    setSelectedAuthor(authorId)
-    setWillDeletePopup(!willDeletePopup)
     async function fetchData (){
         try{
 
@@ -57,8 +69,57 @@ const deletePopupHandler = (authorId)=>{
                     axdxmxixn:adminLoginToken
                 }
             } )
+            const newAuthors=  response.data.authors.map((author)=>{
 
-            setAuthors(response.data.authors)
+                return{
+                    name:author.name,
+                    _id:author._id,
+                    description:author.description,
+                    genre:author.genre.name,
+                    language:author.language.name,
+    
+                }
+              })
+                setAuthors(newAuthors)
+            
+        }
+        catch(error){
+            throw error
+        }
+
+    }
+
+    fetchData()
+
+    
+}
+
+const deletePopupHandler = (_id)=>{
+
+    setSelectedAuthor({_id})
+    setWillDeletePopup(!willDeletePopup)
+
+    async function fetchData (){
+        try{
+
+            const response = await axios.get('/api/author/all',{
+                headers:{
+                    axdxmxixn:adminLoginToken
+                }
+            } )
+            const newAuthors=  response.data.authors.map((author)=>{
+
+                return{
+                    name:author.name,
+                    _id:author._id,
+                    description:author.description,
+                    genre:author.genre.name,
+                    language:author.language.name,
+    
+                }
+              })
+                setAuthors(newAuthors)
+            
         }
         catch(error){
             throw error
@@ -88,7 +149,7 @@ const mappedAuthors = authors.map((author)=>{
     </td>
     <td>
                 <Button variant="info" style={{padding:"1px",margin:"5px"}} 
-                    onClick={()=>{editPopupHandler(author._id)}}
+                    onClick={()=>{editPopupHandler(author._id,author.name,author.description,author.language,author.genre)}}
                 >
                     <FontAwesomeIcon icon={faEdit} />
                 </Button>
@@ -114,6 +175,9 @@ return(
         <AddModal numberBox="0" 
         header="Update Author"
         type="update"
+        authorId={selectedAuthor._id}
+        files="0"
+        textBoxTexts={[selectedAuthor.name,selectedAuthor.description]}
         buttonText= "Update Author"
          dropdown={["language","genre"]}
          textBoxLabels={["name","description"]}
@@ -129,7 +193,7 @@ return(
 
     {
         willDeletePopup? 
-        <DeleteModal authorId={selectedAuthor} deletePopupHandler={deletePopupHandler} />
+        <DeleteModal authorId={selectedAuthor._id} deletePopupHandler={deletePopupHandler} />
         :null
     }
     <table className="author-table"   >

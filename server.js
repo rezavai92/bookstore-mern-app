@@ -8,6 +8,7 @@ const author = require('./routes/author')
 const book = require("./routes/book")
 const auth = require('./routes/auth')
 const language = require('./routes/language')
+const publisher = require('./routes/publisher')
 const genre  = require('./routes/genre')
 const port =process.env.PORT||5000
 
@@ -22,6 +23,7 @@ app.use('/api/admin',admin)
 app.use('/api/auth',auth)
 app.use('/api/langs',language)
 app.use('/api/genres',genre)
+app.use('/api/publishers',publisher)
 app.listen(port,()=>{
 
     

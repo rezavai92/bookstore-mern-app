@@ -1,0 +1,32 @@
+.book{
+
+    
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.add-to-cart{
+    display: none;
+    position: absolute;
+    top: 35%;
+    left:20%;
+}
+
+.book:hover{
+
+    opacity: 0.9;
+    border:4px solid gray;
+    z-index: +1;
+    
+    
+}
+
+.book:hover .add-to-cart{
+    display: block;
+    text-align: center;
+    opacity: 1;
+    background-color: #ffad17;
+    color:white;
+    
+}
