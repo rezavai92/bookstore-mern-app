@@ -59,7 +59,7 @@ const AddModal =(props)=>{
                     
                     const existingAuthDropdown = [...authorDropdown];
                    // console.log("in author, existingdropdownob",dropdownObjList)
-                    axios.get("/api/author/all",{headers:{axdxmxixn:adminLoginToken}}).then((res)=>{
+                    axios.get("/api/authors/all",{headers:{axdxmxixn:adminLoginToken}}).then((res)=>{
 
                         const options = res.data.authors.map((o)=>{return{value:o._id,text:o.name}});
                         

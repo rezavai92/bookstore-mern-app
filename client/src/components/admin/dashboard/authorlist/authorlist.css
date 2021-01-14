@@ -1,7 +1,7 @@
 
 .author-list{
     
-    height: 50vh;
+    height: 100vh;
     overflow-y: scroll;
 }
 
@@ -11,10 +11,10 @@
 .author-table,th,td{
 
     border : 1px solid silver;
-    border-collapse: separate;
+    
 }
 th,td{
-    border: 0px solid white;
+    border: 1px solid black;
 }
 th{
 

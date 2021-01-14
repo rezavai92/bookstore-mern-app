@@ -1,0 +1,12 @@
+.bkashBox{
+
+    border: 1px solid silver;
+    border-radius: 0.5rem;
+    padding:2%;
+    text-align: center;
+}
+
+.client-shipping-info{
+
+    margin-top: 1%;
+}

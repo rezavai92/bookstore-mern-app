@@ -9,7 +9,9 @@ const ContextProvider = (props)=>{
 
 
 const[loggedInAdminId,setLoggedInAdminId] = useState(null)
-const[cart,setCart] = useState({items:[]})
+const[cart,setCart] = useState([])
+
+const[searchedBooks,setSearchBooks] = useState([])
 const[total,setTotal] = useState(0)
 const [token,setToken] =useState("");
 const[loggedInUserId,setLoggedInUserId]=useState(null)
@@ -20,30 +22,74 @@ const[loginToken,setLoginToken] = useState("");
 
 useEffect(()=>{
 
+if(Cookies.get("cartID")){
+
+    
+    const cartITemsInStore = JSON.parse(localStorage.getItem("cart-items"));
+    console.log(typeof(cartITemsInStore)  )
+    setCart(cartITemsInStore )  ;
+    console.log(cart)
+    
+}
+else{
+    if(localStorage.getItem("cart-items")){
+        localStorage.removeItem("cart-items")
+    }
+}
+
 setAdminLoginToken(Cookies.get("axdxmxixn"))
 //setLoggedInUserId(Cookies.get("user"))
 },[])
 
+ 
 const registerUser = (token)=>{
 
     setToken(token);
 
 }
 
-const incrementTotal = (amount)=>{
 
-    setTotal(total+amount)
+const saveChangesInSearch= (item)=>{
+
+    setSearchBooks(item)
 }
-const decrementTotal  = (amount)=>{
 
-    setTotal(total-amount);
+const incrementItem = (itemId)=>{
+
+    const existingItems= [...cart];
+
+   const extItems= existingItems.map((i)=>{if ((i.item._id)===itemId){
+
+        i.number++;
+        
+    }; return i; });
+
+    setCart(extItems);
+    localStorage.setItem("cart-items",JSON.stringify(extItems));
+    
+}
+const decrementItem  = (itemId)=>{
+
+    const existingItems= [...cart];
+
+   const extItems= existingItems.map((i)=>{if ((i.item._id)===itemId){
+
+        i.number--;
+        
+    }
+    return i;
+});
+
+    setCart(extItems);
+    localStorage.setItem("cart-items",JSON.stringify(extItems));
+    
 }
 
 const addToCart=(item)=>{
 
-const cartItems = [...cart.items];
+const cartItems = [...cart];
 
- const found =cartItems.find((i)=>{return item._id===i._id});
+ const found =cartItems.find((i)=>{return item._id===i.item._id});
 
  console.log(found)
  if(found){
@@ -52,28 +98,45 @@ const cartItems = [...cart.items];
  }
 
  else{
-     let existingTotal =total;
+     
+     cartItems.push({item:item,number:1});    
+     
+    setCart(cartItems);
+    console.log(JSON.stringify(cartItems));
 
-     setTotal(existingTotal+item.price);
-    setCart({items:cartItems});
+    Cookies.set("cartID","sdfg4567gfdh")
+    localStorage.setItem("cart-items",JSON.stringify(cartItems));
+    
+    
     
  }
-cartItems.push(item);
+
 
 
 }
 
+const countTotal = ()=>{
+
+    const net = cart.reduce((a,b)=>{return a+b.item.price*b.number},0);
+
+    return net;
+}
 const removeFromCart =(itemId)=>{
 
-    const cartItems = [...cart.items];
+    const cartItems = [...cart];
 
     const filteredItems = cartItems.filter((c)=>{
 
-        return c.id!=itemId;
+        return c.item._id!=itemId;
     })
+    console.log("filtered items",filteredItems)
 
-    setCart({items:filteredItems})
-
+    setCart(filteredItems);
+    localStorage.setItem("cart-items",JSON.stringify(filteredItems)) ;
+    if(filteredItems.length===0){
+        Cookies.remove("cartID");
+        localStorage.removeItem("cart-items")
+    }
 
 }
 
@@ -114,6 +177,15 @@ const confirmAdminLogout = ()=>{
     }
     
 
+    const paymentClear =()=>{
+  
+        
+
+        setCart([]);
+        Cookies.remove("cart-items");
+        Cookies.remove("cartID");
+        localStorage.removeItem("cart-items")
+    }
     const confirmLogin = (token,loggedInAdminId)=>{
 
         setAdminLoginToken(token);
@@ -145,9 +217,9 @@ const confirmAdminLogout = ()=>{
 
     return(<div>
 
-        <context.Provider value={{arrayBufferToBase64,total,cart,addToCart,removeFromCart, loggedInUserId, loginToken,loggedInAdminId,confirmLogin,confirmLogout,
+        <context.Provider value={{searchedBooks,paymentClear ,arrayBufferToBase64,countTotal,cart,addToCart,removeFromCart, loggedInUserId, loginToken,loggedInAdminId,confirmLogin,confirmLogout,
         
-        adminLoginToken,incrementTotal,decrementTotal, confirmAdminLogin,confirmAdminLogout
+        adminLoginToken,incrementItem,saveChangesInSearch,decrementItem, confirmAdminLogin,confirmAdminLogout
         }} >
 
             {props.children}

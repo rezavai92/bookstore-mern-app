@@ -32,7 +32,11 @@ router.post("/",[adminAuth],async (req,res)=>{
     }
 } )
 
-router.get("/all",[adminAuth],async (req,res)=>{
+//get particular author
+
+
+
+router.get("/all",async (req,res)=>{
 
     try{
         
@@ -68,6 +72,29 @@ router.get("/all",[adminAuth],async (req,res)=>{
     }
 
 })
+
+router.get("/:id",async (req,res)=>{
+
+    try{
+
+        const author= await Author.findById(req.params.id);
+
+        if(author){
+
+            res.json({author:author})
+        }
+
+        else{
+
+            res.status(404).json({msg:"not found"})
+        }
+    }
+    catch(error){
+
+        res.status(501).json({msg:"internal server error"})
+
+    }
+} )
 
 router.put("/:id",[adminAuth],async (req,res)=>{
 

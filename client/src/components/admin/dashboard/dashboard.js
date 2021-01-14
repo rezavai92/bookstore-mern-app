@@ -3,6 +3,7 @@ import {context} from '../../../contexts/context'
 import {Redirect} from 'react-router-dom'
 import RegisterBox from './Box/registerBox'
 import AdminLogout from '../AdminLogout/logout'
+import PaymentList from './payment/paymentdetail'
 import AuthorList from './authorlist/authorlist'
 import BookList from './booklist/booklist'
 import './dashboard.css'
@@ -108,12 +109,15 @@ const Dashboard = ()=>{
 
 
     console.log("admin login token from dashboard.js",adminLoginToken)
-    return(<div class="container" >
+    return(<div class="container" style={{marginBottom:"2%",marginTop:"2%"}}  >
 
         {adminLoginToken?
                 <>
                 
-                <AdminLogout/>
+               <div style={{textAlign:"center"}} >
+               <AdminLogout/>
+
+               </div>
                 <div className="register-box-flex" >
 
 
@@ -170,8 +174,17 @@ const Dashboard = ()=>{
            
     
             </div>
-            <AuthorList/>
-            <BookList/>
+
+            <div>
+            <PaymentList/>
+            </div>
+
+                <div>
+                    <AuthorList/>
+                </div>
+            <div>
+                <BookList/>
+            </div>
             </>
             
 

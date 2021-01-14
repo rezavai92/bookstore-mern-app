@@ -37,7 +37,70 @@ router.get("/all",async (req,res)=>{
 
     }
 })
+//get book by book name 
 
+
+router.get("/search/:term",async (req,res)=>{
+
+    try{
+
+    const books=    await Book.find({name:{ $regex: '.*' + req.params.term + '.*',$options: 'i' } } )
+  
+        if(!books){
+            return res.status(404).json({msg:"not found"})
+        }
+
+        res.json({books})
+}
+    catch(error){
+
+
+        res.status(500).json({msg:"internal server error"})
+    }
+})
+
+//get book by author id
+
+router.get("/author/:id",async(req,res)=>{
+
+    try{
+    
+       const books= await Book.find({author:req.params.id}).sort("name")
+         .populate("genre","name").populate("language","name").
+         populate("author","name").populate("publisher","name");
+    
+         res.json({books})
+    }
+    
+    catch(error){
+    
+        res.status(500).json({msg:"internal server error"})
+    
+    }
+    
+    })
+
+    //get book by publisher id
+
+    router.get("/publisher/:id",async(req,res)=>{
+
+        try{
+        
+           const books= await Book.find({publisher:req.params.id}).sort("name")
+             .populate("genre","name").populate("language","name").
+             populate("author","name").populate("publisher","name");
+        
+             res.json({books})
+        }
+        
+        catch(error){
+        
+            res.status(500).json({msg:"internal server error"})
+        
+        }
+        
+        })
+    
 // update a book
 
 router.put("/:id",[adminAuth,upload.single("photo")],async (req,res)=>{

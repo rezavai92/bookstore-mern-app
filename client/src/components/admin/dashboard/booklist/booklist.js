@@ -209,7 +209,7 @@ const mappedBooks = books.map((book)=>{
 return(
 
 
-    <div style={{marginTop:"5%"}}>
+    <div style={{marginTop:"5%",marginBottom:"2%"}}>
     <h2>List of Books</h2>
     <div className="author-list" >
     
@@ -243,7 +243,7 @@ return(
         <DeleteModal bookId={selectedBook._id} deletePopupHandler={deletePopupHandler} />
         :null
     }
-    <table className="author-table"   >
+    <table className="author-table"  cellPadding="5px" cellSpacing="5px" >
         <tr>
             <th>
                 Name

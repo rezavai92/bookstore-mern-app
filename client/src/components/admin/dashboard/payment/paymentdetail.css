@@ -1,0 +1,14 @@
+.payment-list{
+    height:100vh;
+    overflow-y: scroll;
+}
+
+
+
+.payment-table{
+
+
+}
+.payment-table td{
+    vertical-align: top;
+}

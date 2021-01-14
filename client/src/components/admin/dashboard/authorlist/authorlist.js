@@ -23,7 +23,7 @@ useEffect(()=>{
     async function fetchData (){
         try{
 
-            const response = await axios.get('/api/author/all',{
+            const response = await axios.get('/api/authors/all',{
                 headers:{
                     axdxmxixn:adminLoginToken
                 }
@@ -196,7 +196,7 @@ return(
         <DeleteModal authorId={selectedAuthor._id} deletePopupHandler={deletePopupHandler} />
         :null
     }
-    <table className="author-table"   >
+    <table className="author-table" cellPadding="5px" cellSpacing="5px"  >
         <tr>
             <th>
                 Name
