@@ -27,6 +27,19 @@ app.use('/api/langs',language)
 app.use('/api/genres',genre)
 app.use('/api/publishers',publisher)
 app.use('/api/payment',payment )
+
+if(process.env.NODE_ENV==="production"){
+
+
+    app.use(express.static('client/build'));
+
+    app.get("*",(req,res)=>{
+
+        res.sendFile(path.resolve(__dirname,'client','build','index.html'))
+    } )
+}
+
+
 app.listen(port,()=>{
 
 
