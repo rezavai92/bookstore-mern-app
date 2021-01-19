@@ -1,9 +1,8 @@
 import React,{useState,useEffect,useContext}from 'react'
 
-
 import {context} from '../../../contexts/context'
 import Navigation from '../navigation/navigation'
-import {Link} from 'react-router-dom'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import Books from '../products/books'

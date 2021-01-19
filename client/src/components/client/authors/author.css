@@ -6,6 +6,18 @@
     height: 100%;
     
 }
+
+@media screen and (max-width:480px){
+
+
+    .books-flex{
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        margin : 2%;
+    }
+}
 .profile{
     margin-top: 1%;
 }

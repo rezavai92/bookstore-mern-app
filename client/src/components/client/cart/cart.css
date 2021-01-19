@@ -88,3 +88,28 @@
     height: 100%;
     
 }
+
+@media screen and (max-width:480px){
+
+    .cart-items-total-flex{
+
+        display: flex;
+        flex-direction:column;
+        justify-content: flex-start;
+        background-color: #e6f0e8;
+        margin-bottom: 5%;
+        min-height: 50vh;
+        
+    }
+
+    .cart-items{
+        width: 100%;
+    }
+
+    .total{
+        width: 100%;
+        position: relative;
+        margin-left: 5%;
+    }
+
+}

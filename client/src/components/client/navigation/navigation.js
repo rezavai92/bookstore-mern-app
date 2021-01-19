@@ -32,8 +32,12 @@ const { cart,saveChangesInSearch} =useContext(context)
  {willRedirect 
  ? <Redirect to={`/book/search?term=${searchTerm}`} /> : null}
  
- <Navbar bg="dark" variant="dark">
+  <Navbar  collapseOnSelect expand="lg" bg="dark" variant="dark">
     <Navbar.Brand ><Link to="/" style={{color:"white"}} >Book Corner</Link></Navbar.Brand>
+   
+    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+
+    <Navbar.Collapse id="responsive-navbar-nav">
     <Nav className="mr-auto"  >
       <Nav.Link ><Link style={{color:"white"}} to="/authors" >Authors</Link></Nav.Link>
       <Nav.Link ><Link style={{color:"white"}} to="/publishers" > Publishers </Link></Nav.Link>
@@ -58,6 +62,8 @@ const { cart,saveChangesInSearch} =useContext(context)
 
       </Nav.Link>
     </Nav>
+
+    </Navbar.Collapse>
   </Navbar>
  
     </div>)

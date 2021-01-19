@@ -71,7 +71,7 @@ console.log(author)
              <FontAwesomeIcon icon={faInfoCircle} />{" "+author.description}</p>
        </div>
        <hr/>
-       <h3> <FontAwesomeIcon icon={faBook} /> List of {`${author.name}'s`} Books </h3>
+       <h4> <FontAwesomeIcon icon={faBook} /> List of {`${author.name}'s`} Books </h4>
         <div className="books-flex" >
           
                 {

@@ -64,7 +64,7 @@ router.get("/all",[adminAuth] ,async (req,res)=>{
     
     try{
 
-        console.log("hello")
+        
         const genres = await Genre.find({});
 
         res.json({

@@ -37,7 +37,7 @@ const Books =()=>{
            {books.length>0?
            
            mappedBooks
-           : <div style={{ position:"absolute",top:"50%",left:"40%"}} > <Loader /> </div>} 
+           : <div style={{ position:"absolute",top:"50%",left:"45%"}} > <Loader /> </div>} 
         
         </div>)
 }
