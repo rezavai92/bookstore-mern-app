@@ -1,24 +1,35 @@
-# bookstore-mern-app
+# BOOK CORNER
 
-This Project entitled BookCorner is an ecommerce site built in MERN (MongoDB,React,Node,Express) stack.
+A simple Book selling web application . 
 
-Key features:
+<h3>Used Technologies </h3>
 
-Admin:- an iterctive page is developed for admin panel, where admin can do all the CRUD Operations like
+* Javascript (ES6)
+* React
+* Nodejs
+* Mongodb
+* Express
+* Bootstrap
+* Html5
+* CSS3
+
+### Key features:
+
+<strong>Admin:-</strong> An admin panel is developed , where admin can do all the CRUD Operations like
 
  ***Creating/Updating/Reading/Deleting  Authors,Books,genres etc
  
  admin can also view latest transaction and verify it
  
  
-Client : all the basic features that an e-commerce site is supposed to have are included.like
+<strong>Client : </strong> all the basic features that an e-commerce site is supposed to have are included.like
 
 
-1) client will be able to see information (image,price etc) of the books
-2) A responsive shopping cart is implemented
-3) Customer can buy multiple units of one particular product. shopping cart will automatically hold all the latest taken products and prices as per total unit
-4) Finally, customers will view shipping page to provide all the necessary information required to ship the product (book),and payment information.
-5)all the information will be saved in database , and admin can view as soon as any payment is successfully completed.
+* client will be able to see information (image,price etc) of the books
+*  A responsive shopping cart is implemented
+*  Customer can buy multiple units of one particular product. shopping cart will automatically hold all the latest taken products and prices as per total unit
+*  Finally, customers will view shipping page to provide all the necessary information required to ship the product (book),and payment information.
+*  all the information will be saved in database , and admin can view as soon as any payment is successfully completed.
 
 
 
